@@ -12,6 +12,8 @@ To join the project, you will need:
 > * HTML5 /CSS
 > * JavaScript
 
+## Documentation
+The ranking is based on the [CJP Rules](https://docs.google.com/document/d/1_lp65D6MB6UFPD4edSXEHRTscp7TIl9cTCT091OdSuE/edit) competitor ranking algorithm.
 
 ## Contribution
 
