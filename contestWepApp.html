@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <?!= includeExternalFile('styles.html') ?>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+    <header class="header-box header-container">
+      <p class="title fancy animate__animated animate__pulse" id="title-for-last-contests"></p>
+        <div class="athlete-category">
+            <div class="circley">
+                <div>
+                    <div class="kg" id="kg"></div>
+                    <div class="suffix">Kg</div>
+                </div>
+            </div>
+        </div>
+        <div class="info">
+            <div class="pic-info" id="pic"></div>
+            <div class="title-info">
+                <h1 id="name"></h1>
+                <div class="info-div">
+                  <div class="location" id="location"></div>
+                  <div class="age-info" id="age"></div>
+                </div>
+            </div>
+            
+        </div>
+    </header>
+    <main>
+        <div class="main-content">
+            <div class="page-content">
+                <div id="contest-list">
+                    <div class="component--filters">
+                        <div class="filters-row">
+                            <div class="one-filter search-filter">
+                                <label class="filter-label">Rechercher</label>
+                                <input type="text" placeholder="Taper le nom de l'athlète" id="search">
+                                <button class = "btn" type="submit" onclick="displayContests()">Rechercher</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="component-contest-list">
+                        <div class="contest-table-container">
+                            <table class="contest-table">
+                                <thead>
+                                    <tr>
+                                        <th>Combattant Blanc</th>
+                                        <th>Temps et Score</th>
+                                        <th>Combattant Bleu</th>
+                                        <th>Tournois</th>
+                                        <th>Round</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="results-content">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="loading" class="loading">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+      <?!= includeExternalFile('javascripts.html') ?>
+</body>
+</html>

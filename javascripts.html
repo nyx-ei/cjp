@@ -1,0 +1,127 @@
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    loadLastContests();
+  });
+
+      /**
+       * Load the last contests.
+       */
+      function loadLastContests(){
+        google.script.run.withSuccessHandler(displayLastContests).getLastContests();
+      }
+      /**
+       * Load contests corresponding to a given name.
+       */
+      function displayContests(){
+        var name = document.getElementById('search').value;
+        const loading = document.createElement('div');
+        const attr_load_id = document.createAttribute('id');
+        const attr_load_class = document.createAttribute('class');
+        attr_load_id.value = 'loading';
+        attr_load_class.value = 'loading';
+        loading.setAttributeNode(attr_load_id);
+        loading.setAttributeNode(attr_load_class);
+        loading.innerHTML = 'loading...';
+        document.querySelector('.component-contest-list').appendChild(loading);
+        google.script.run.withSuccessHandler(displayContestsByName).getContests(name);
+      }
+      /**
+       * Show the returned contests corresponding to an input name.
+       * @param {Array.<Array>} results The contests lists to show.
+       */
+      function displayContestsByName(results){
+       if(results.length != 0){
+          console.log(results)
+          clearAll();
+          document.getElementById("kg").innerHTML = results[results.length-1][0][5].slice(1);
+          var div_pic = document.getElementById('pic');
+          var pic = document.createElement('img');
+          pic.setAttribute('src', `${results[results.length-1][0][4]}`);
+          pic.setAttribute('class', 'pic-big');
+          div_pic.appendChild(pic);
+          document.getElementById('name').innerHTML = results[results.length-1][0][1];
+          document.getElementById('location').innerHTML = results[results.length-1][0][3];
+          document.getElementById('location').setAttribute('class', 'location');
+          const current_date = new Date();
+          document.getElementById('age').innerHTML = `Age: ${Number(current_date.getFullYear()) - Number(results[results.length-1][0][2])} ans`;
+
+          let display = "";
+          for(let r of results.slice(0,-1)){
+          display += '<tr>';
+          display += '<td>';
+          display += '<div class="judoka"><div class="country" id="country-white">'+r[1][2]+'</div>';
+          display += '<div class="judoka-name" id="name-white">'+r[1][0]+'</div>';
+          display += `<div class="profile-photo"><img id="image-white" src="${r[1][3]}" alt="photo combattant
+          blanc" width="40"></div></div>`;
+
+          display += '<td class="scoreboard-cell"><div class="scoreboard"><div><table><thead><tr><th>I</th><th>W</th></tr></thead>';
+          display += '<tbody><td id="I-white">'+r[6]+'</td>';
+          display += '<td id="W-white">'+r[7]+'</td></tbody></table></div>';
+          display += '<div id="duration" class="duration">'+r[10]+'</div>';
+          display +='<div><table><thead><tr><th>I</th><th>W</th></tr></thead>';
+          display += '<tbody><td id="I-blue">'+r[8]+'</td>';
+          display += '<td id="W-blue">'+r[9]+'</td></tbody></table></div></div></td>';
+
+          display += '<td><div class="judoka"><div class="country" id="country-blue">'+r[2][2]+'</div>';
+          display += '<div class="judoka-name" id="name-blue">'+r[2][0]+'</div>';
+          display += `<div class="profile-photo"><img id="image-blue" src="${r[2][3]}" 
+          alt="photo combattant bleu" width="40"></div></div></td>`;
+          display += `<td id="competition">${r[3][0]} ${r[3][2]}</td>`;
+          display += '<td id="round">'+r[5]+'</td></tr>';
+        }
+        document.getElementById('results-content').innerHTML = display;
+        loading.remove();
+        }else{
+          loading.remove();
+          alert("Ce nom est introuvable! Veuillez entrer un nom correcte de judoka camerounais ");
+        }
+      }
+
+    /**
+     * Show the returned the last contests of the database.
+     * @param {Array.<Object>} results The contests lists to show.
+     */
+    function displayLastContests(results){
+      clearAll();
+      document.getElementById('title-for-last-contests').innerHTML = 'découvrez les derniers combats des athletes camerounais';
+        document.getElementById('kg').innerHTML = results[0]['category'][0].slice(1);
+        let display = "";
+        for(let r of results){
+          display += '<tr>';
+          display += '<td>';
+          display += '<div class="judoka"><div class="country" id="country-white">'+r['fighter1'][2]+'</div>';
+          display += '<div class="judoka-name" id="name-white">'+r['fighter1'][0]+'</div>';
+          display += `<div class="profile-photo"><img id="image-white" src="${r['fighter1'][3]}" alt="photo combattant
+          blanc" width="40"></div></div>`;
+
+          display += '<td class="scoreboard-cell"><div class="scoreboard"><div><table><thead><tr><th>I</th><th>W</th></tr></thead>';
+          display += '<tbody><td id="I-white">'+r['matchInfo'][2]+'</td>';
+          display += '<td id="W-white">'+r['matchInfo'][3]+'</td></tbody></table></div>';
+          display += '<div id="duration" class="duration">'+r['matchInfo'][6]+'</div>';
+          display +='<div><table><thead><tr><th>I</th><th>W</th></tr></thead>';
+          display += '<tbody><td id="I-blue">'+r['matchInfo'][2]+'</td>';
+          display += '<td id="W-blue">'+r['matchInfo'][3]+'</td></tbody></table></div></div></td>';
+
+          display += '<td><div class="judoka"><div class="country" id="country-blue">'+r['fighter2'][2]+'</div>';
+          display += '<div class="judoka-name" id="name-blue">'+r['fighter2'][0]+'</div>';
+          display += `<div class="profile-photo"><img id="image-blue" src="${r['fighter2'][3]}" 
+          alt="photo combattant bleu" width="40"></div></div></td>`;
+          display += `<td id="competition">${r['compet'][0]} ${r['compet'][2]}</td>`;
+          display += '<td id="round">'+r['matchInfo'][1]+'</td></tr>';
+        }
+        document.getElementById('results-content').innerHTML = display;
+        document.getElementById('loading').remove();
+    }
+    /**
+     * Clear all the data to display for incoming display.
+     */
+    function clearAll(){
+      document.getElementById("title-for-last-contests").innerHTML = "";
+      document.getElementById("kg").innerHTML = "";
+      document.getElementById("pic").innerHTML = "";
+      document.getElementById("name").innerHTML = "";
+      document.getElementById("age").innerHTML = "";
+      document.getElementById("location").innerHTML = "";
+      document.getElementById("results-content").innerHTML = "";
+    }
+  </script>
