@@ -125,14 +125,12 @@ function searchJudokaByName(name){
   const data = getDataFromSheet();
   let person = [];
   if(name.split(' ').join('').length == 0) return person;
-  else{
-    for(let p of data['arr_person']){
-      if(p[1].toLowerCase().includes(name.toLowerCase())){
-        person = p;
-        person[2] = person[2].getFullYear();
-        break;
-      }
-    }
+  for(let p of data['arr_person']){
+   if(p[1].toLowerCase().includes(name.toLowerCase())){
+    person = p;
+    person[2] = person[2].getFullYear();
+    break;
+   }
   }
   if(person.length != 0){
     const fighter = data['arr_fighter'].filter(f => f[1] == person[0]);
