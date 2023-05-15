@@ -69,13 +69,6 @@ function addCompet(input){
       input.level
     ]);
   }else{
-    showAlertUpdate("Attention!!\nCette entrée existe déjà, Veuillez entrer des valeurs différentes.");
+    ui.alert("Attention!!\nCette entrée existe déjà, Veuillez entrer des valeurs différentes.");
   }
-}
-
-/**
- * To show an alert.
- */
-function showAlertUpdate(message){
-  return ui.alert(message);
 }
