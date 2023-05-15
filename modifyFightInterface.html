@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+      body{
+        margin-left: 30px;
+      }
+      .space{
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form-update">
+      <div class="block form-group">
+        <label for="judoka">Selectionnez la compétition à modifier</label>
+        <select id="select" name="competition">
+          <?
+            const ar_matches = getMatches();
+            for(let m of ar_matches){
+          ?>
+          <option value="<?=m?>"><?=m[1]?> vs <?=m[2]?> <?=m[3]?> <?=m[4]?> <?=m[5]?></option>
+          <?}?>
+        </select>
+      </div>
+      <div id="div-container">
+        <fieldset>
+          <legend>Selectionnez les attributs à modifier</legend>
+          <div>
+            <input type="checkbox" name="checkbox" id="fighterA">
+            <label for="fighterA">Combattant 1</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="fighterB">
+            <label for="fighterB">Combattant 2</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="compet">
+            <label for="compet">Competition</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="winner">
+            <label for="winner">Vainqueur</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="stage">
+            <label for="stage">Etape</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="ipponFighterA">
+            <label for="ipponFighterA">Ippon Combattant 1</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="ipponFighterB">
+            <label for="ipponFighterB">Ippon Combattant 2</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="wazaFighterA">
+            <label for="wazaFighterA">Waza Combattant 1</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="wazaFighterB">
+            <label for="wazaFighterB">Waza Combattant 2</label>
+          </div>
+        </fieldset>
+        <div id="div-update" class="block form-group">
+            <div hidden>
+              <input id = "idMatch" type="text" name="idMatch">
+            </div>
+            <div id="div-btn" class="space">
+              <button class="action" onclick="google.script.run.updateFight(document.getElementById('form-update'))">Mettre à jour</button>
+              <button onclick="google.script.host.close()">Annuler</button>
+            </div>
+        </div>
+      </div>
+    </form>
+     <script>
+        function displayCheckbox(){
+          const div = document.getElementById('div-container');
+          div.hidden = false;
+          console.log('hi here')
+        }
+
+        function displayInput(divWrapper, array, index, checkbox, id_div, input_type, input_name, label_str){
+          if (checkbox.checked == true && document.getElementById(id_div) == null){
+            const inputText = document.createElement('input');
+            inputText.setAttribute('type', input_type);
+            inputText.setAttribute('name', input_name);
+
+            const div = document.createElement('div');
+            const label = document.createElement('label');
+
+            div.setAttribute('id', id_div);
+            div.className = "space";
+            label.innerHTML = label_str;
+            div.appendChild(label);
+            inputText.value = array[index];
+            div.appendChild(inputText);
+            divWrapper.insertBefore(div, document.getElementById('div-btn'));
+          }else if (checkbox.checked == false && document.getElementById(id_div) != null){
+            divWrapper.removeChild(document.getElementById(id_div));
+          }
+        }
+
+        function generateField(){
+          const checkboxFighterA = document.getElementById('fighterA');
+          const checkboxFighterB = document.getElementById('fighterB');
+          const checkboxCompet = document.getElementById('compet');
+          const checkboxWinner = document.getElementById('winner');
+          const checkboxStage = document.getElementById('stage');
+          const checkboxIpponA = document.getElementById('ipponFighterA');
+          const checkboxIpponB = document.getElementById('ipponFighterB');
+          const checkboxWazaA = document.getElementById('wazaFighterA');
+          const checkboxWazaB = document.getElementById('wazaFighterB');
+          const divUpdate = document.getElementById('div-update');
+          const idInput = document.getElementById('idMatch');
+            
+          const selectElt = document.getElementById('select');
+          let arr = (selectElt.value).split(',');
+          idInput.value = arr[0].slice(1);
+
+          displayInput(divUpdate, arr, 1, checkboxFighterA, 'div-fighterA', 'text', 'fighterA', 'Changer le Combattant 1:');
+          displayInput(divUpdate, arr, 2, checkboxFighterB, 'div-fighterB', 'text', 'fighterB', 'Changer le Combattant 2:');
+          displayInput(divUpdate, arr, 3, checkboxCompet, 'div-compet', 'text', 'compet', 'Changer de compétition:');
+          displayInput(divUpdate, arr, 4, checkboxWinner, 'div-winner', 'text', 'winner', 'Changer le Vainqueur:');
+          displayInput(divUpdate, arr, 5, checkboxStage, 'div-stage', 'text', 'stage', 'Changer le type d\'étape:');
+          displayInput(divUpdate, arr, 6, checkboxIpponA, 'div-ipponFighterA', 'text', 'ipponFighterA', 'Changer la valeur ippon du combattant 1:');
+          displayInput(divUpdate, arr, 7, checkboxIpponB, 'div-ipponFighterB', 'text', 'ipponFighterB', 'Changer la valeur ippon du combattant 2:');
+          displayInput(divUpdate, arr, 8, checkboxWazaA, 'div-wazaFighterA', 'text', 'wazaFighterA', 'Changer la valeur waza du combattant 1:');
+          displayInput(divUpdate, arr, 9, checkboxWazaB, 'div-wazaFighterB', 'text', 'wazaFighterB', 'Changer la valeur waza du combattant 2:'); 
+        }
+
+        const checkboxes = document.getElementsByName('checkbox');
+        for(let c of checkboxes)
+          c.addEventListener("click",generateField);
+        
+      </script>
+  </body>
+</html>

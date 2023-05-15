@@ -1,14 +1,14 @@
-const ui = SpreadsheetApp.getUi();
+// const ui = SpreadsheetApp.getUi();
 
-const first_row_index = 2;
-const first_col_index = 1;
+// const first_row_index = 2;
+// const first_col_index = 1;
 
-const table_person = "Person";
+// const table_person = "Person";
 
-var sheets = SpreadsheetApp.getActiveSpreadsheet();
-const sheet_pers = sheets.getSheetByName(table_person);
+// var sheets = SpreadsheetApp.getActiveSpreadsheet();
+// const sheet_pers = sheets.getSheetByName(table_person);
 
-const default_img_link = "https://img.freepik.com/vecteurs-premium/portrait-jeune-homme-barbe-coiffure-avatar-masculin-illustration-vectorielle_266660-423.jpg?w=740";
+// const default_img_link = "https://img.freepik.com/vecteurs-premium/portrait-jeune-homme-barbe-coiffure-avatar-masculin-illustration-vectorielle_266660-423.jpg?w=740";
 
 /**
  * Creates a custom menu in Google Sheets when the spreadsheet opens.

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+      body{
+        margin-left: 30px;
+      }
+      .space{
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form-update">
+      <div class="block form-group">
+        <label for="judoka">Selectionnez le Judoka à modifier</label>
+        <select id="select" name="judoka" onchange="displayCheckbox()">
+          <?
+            const ar_pers = getJudoka();
+            for(let p of ar_pers){
+          ?>
+          <option value="<?=p?>" onclick="displayCheckbox()"><?=p[1]?></option>
+          <?}?>
+        </select>
+      </div>
+      <div hidden id="div-container">
+        <fieldset>
+          <legend>Selectionnez les attributs à modifier</legend>
+          <div>
+            <input type="checkbox" name="checkbox" id="name">
+            <label for="name">Nom</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="birthdate">
+            <label for="birthdate">Date de Naissance</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="nationality">
+            <label for="nationality">Nationalité</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="image">
+            <label for="image">Changer le lien de l'image de profil</label>
+          </div>
+        </fieldset>
+        <div id="div-update" class="block form-group">
+            <div hidden>
+              <input id = "idJudoka" type="text" name="idJudoka">
+            </div>
+            <div id="div-btn" class="space">
+              <button class="action" onclick="google.script.run.updateJudoka(document.getElementById('form-update'))">Mettre à jour</button>
+              <button>Annuler</button>
+            </div>
+        </div>
+      </div>
+    </form>
+     <script>
+        function displayCheckbox(){
+          const div = document.getElementById('div-container');
+          div.hidden = false;
+        }
+
+        function displayInput(divWrapper, array, index, checkbox, id_div, input_type, input_name, label_str){
+          if (checkbox.checked == true && document.getElementById(id_div) == null){
+            const inputText = document.createElement('input');
+            const div = document.createElement('div');
+            const label = document.createElement('label');
+            const idInput = document.getElementById('idJudoka');
+            idInput.value = array[0].slice(1);
+            inputText.setAttribute('type', input_type);
+            inputText.setAttribute('name', input_name);
+            div.setAttribute('id', id_div);
+            div.className = "space";
+            label.innerHTML = label_str;
+            div.appendChild(label);
+            inputText.value = array[index];
+            div.appendChild(inputText);
+            divWrapper.insertBefore(div, document.getElementById('div-btn'));
+          }else if (checkbox.checked == false && document.getElementById(id_div) != null){
+            divWrapper.removeChild(document.getElementById(id_div));
+          }
+        }
+
+        function generateField(){
+          const checkboxName = document.getElementById('name');
+          const checkboxBirthDate = document.getElementById('birthdate');
+          const checkboxNationality = document.getElementById('nationality');
+          const checkboxImage = document.getElementById('image');
+          const divUpdate = document.getElementById('div-update');
+
+          const selectElt = document.getElementById('select');
+          let arr = (selectElt.value).split(',');
+
+          displayInput(divUpdate, arr, 1, checkboxName, 'div-name', 'text', 'nameJudoka', 'Mettre à jour le nom:');
+          displayInput(divUpdate, arr, 2, checkboxBirthDate, 'div-birthdate', 'date', 'birthdate', 'Mettre à jour la date de naissance:');
+          displayInput(divUpdate, arr, 3, checkboxNationality, 'div-nationality', 'text', 'nationality', 'Mettre à jour la nationalité:');
+          displayInput(divUpdate, arr, 4, checkboxImage, 'div-image', 'text', 'image', 'Mettre à jour l\'image de profil:');  
+        }
+
+        const checkboxes = document.getElementsByName('checkbox');
+        for(let c of checkboxes)
+          c.addEventListener("click",generateField);
+        
+      </script>
+  </body>
+</html>

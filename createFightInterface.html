@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+      body{
+        margin-left: 30px;
+      }
+      .warning {
+        border: 2px solid #f39389;
+        border-radius: 2px;
+        padding: 10px;
+        position: absolute;
+        background-color: #fbd8d4;
+        color: #3b3c40;
+      }
+      .space{
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form-update" class="form-group">
+      <div id="div-wrapper">
+        <div id="selectA-div">
+          <label for="fighterA">Combattant 1:</label>
+          <select id="selectA" name="fighterA" onchange="displayNameAndCategory(this.parentNode)">
+            <?
+              const ar_fighter = getFighters();
+              for(let f of ar_fighter){
+            ?>
+            <option value="<?=f?>"><?=f[0]?></option>
+            <?}?>
+          </select>
+        </div>
+        <div id="selectB-div">
+          <label for="fighterB">Combattant 2:</label>
+          <select id="selectB" name="fighterB" onchange="displayNameAndCategory(this.parentNode)">
+            <?for(let f of ar_fighter){?>
+            <option value="<?=f?>"><?=f[0]?></option>
+            <?}?>
+          </select>
+        </div>
+        <div id="selectCompet-div">
+          <label for="selectCompet">Compétition:</label>
+          <select id="selectCompet" name="compet">
+            <?
+              const ar_competition = getCompetition();
+              for(let compet of ar_competition){
+            ?>
+            <option value="<?=compet[0]?>">
+              <strong>ID: </strong> <em><?=compet[0]?></em>
+              <strong>Nom: </strong> <em><?=compet[1]?></em>
+              <strong>Ville: </strong> <em><?=compet[2]?></em>
+              <strong>Année: </strong> <em><?=compet[3]?></em>
+            </option>
+            <?}?>
+          </select>
+        </div>
+        <div id="stage-div">
+          <label for="stage">Tour:</label>
+          <select id="stage" name="stage">
+            <option value="Round 1">Round 1</option>
+            <option value="Round 2">Round 2</option>
+            <option value="Round 3">Round 3</option>
+            <option value="Quater-Final">Eight-Final</option>
+            <option value="Quater-Final">Quater-Final</option>
+            <option value="Semi-Final">Semi-Final</option>
+            <option value="Final">Final</option>
+          </select>
+        </div>
+        <div id="winner">
+          <label for="winner">Vainqueur:</label>
+          <select name="winner">
+            <option id="winnerA"></option>
+            <option id="winnerB"></option>
+          </select>
+        </div>
+        <div id="duration">
+          <label for="duration">Durée:</label>
+          <input type="text" name="duration"/>
+        </div>
+        <div id="ipponFighterA">
+          <label for="ipponFighterA">Ippon Combattant 1:</label>
+          <input type="text" name="ipponFighterA"/>
+        </div>
+        <div id="ipponFighterB">
+          <label for="ipponFighterB">Ippon Combattant 2:</label>
+          <input type="text" name="ipponFighterB"/>
+        </div>
+        <div id="wazaFighterA">
+          <label for="wazaFighterA">Waza Combattant 1:</label>
+          <input type="text" name="wazaFighterA"/>
+        </div>
+        <div id="wazaFighterB">
+          <label for="wazaFighterB">Waza Combattant 2:</label>
+          <input type="text" name="wazaFighterB"/>
+        </div>
+        <div id="div-btn" class="space">
+          <div class="space">
+            <button class="action" onclick="validateFields(this.parentNode.parentNode.parentNode.parentNode)">Créer</button>
+            <input type="button" value="Fermer" onclick="google.script.host.close()" />
+          </div>
+        </div>
+      </div>
+    </form>
+    <script>
+      function displayNameAndCategory(node){
+        const selectElementA = document.getElementById('selectA');
+        const arrFighterA = selectElementA.value.split(',');
+        const selectElementB = document.getElementById('selectB');
+        const arrFighterB = selectElementB.value.split(',');
+        const optionEltWinnerA = document.getElementById('winnerA');
+        optionEltWinnerA.value = arrFighterA[0];
+        optionEltWinnerA.innerHTML = arrFighterA[0];
+        const optionEltWinnerB = document.getElementById('winnerB');
+        optionEltWinnerB.value = arrFighterB[0];
+        optionEltWinnerB.innerHTML = arrFighterB[0];
+        if (node.id === 'selectA-div'){
+          google.script.run.withSuccessHandler(object => {
+            console.log(document.getElementById('paragraphA'));
+            if (document.getElementById('paragraphA') !== null)
+              node.removeChild(document.getElementById('paragraphA'));
+
+            let display = '<strong>Nom: </strong><em>'+ object.person +' </em> <strong> Category: </strong><em>'+ object.category +' </em> <strong>Gender: </strong><em>'+ object.gender +' </em>';
+            const paragraph = document.createElement('p');
+            paragraph.id = 'paragraphA';
+            paragraph.innerHTML = display;
+            node.appendChild(paragraph);
+          }).getNameAndCategory(arrFighterA[1], arrFighterA[2]);
+        }else{
+          google.script.run.withSuccessHandler(object => {
+            if (document.getElementById('paragraphB') !== null)
+              node.removeChild(document.getElementById('paragraphB'));
+
+            let display = '<strong>Nom: </strong><em>'+ object.person +' </em> <strong> Category: </strong><em>'+ object.category +' </em> <strong>Gender: </strong><em>'+ object.gender +' </em>';
+            const paragraph = document.createElement('p');
+            paragraph.id = 'paragraphB';
+            paragraph.innerHTML = display;
+            node.appendChild(paragraph);
+          }).getNameAndCategory(arrFighterB[1], arrFighterB[2]);
+        }
+      }
+
+      function validateFields(input){
+        const regExStr = /^\d+[:]\d+$/;
+        if (input.fighterA.value === input.fighterB.value){
+          const divName = document.getElementById('selectB-div');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Attention!! Les identifiants des deux combattants doivent être différents.";
+          divName.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.duration.value.length === 0  || !regExStr.test(input.duration.value)){
+          const divName = document.getElementById('duration');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Durée: Veuillez entrez la durée du combat au format nombre:nombre!";
+          divName.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 4000);
+        }else if (input.ipponFighterA.value.length === 0 || isNaN(parseInt(input.ipponFighterA.value))){
+          const divTown = document.getElementById('ipponFighterA');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Ippon Combattant 1: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.ipponFighterB.value.length === 0 || isNaN(parseInt(input.ipponFighterB.value))){
+          const divTown = document.getElementById('ipponFighterB');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Ippon Combattant 2: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.wazaFighterA.value.length === 0 || isNaN(parseInt(input.wazaFighterA.value))){
+          const divTown = document.getElementById('wazaFighterA');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Waza Combattant 1: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.wazaFighterB.value.length === 0 || isNaN(parseInt(input.wazaFighterB.value))){
+          const divTown = document.getElementById('wazaFighterB');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Waza Combattant 2: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else
+          google.script.run.createFight(input);
+      }
+    </script>
+  </body>
+</html>

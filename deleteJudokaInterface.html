@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+      body{
+        margin-left: 30px;
+      }
+      .space{
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form-update">
+      <div class="block form-group" id="div-wrapper">
+        <h2>Selectionnez le Judoka:</h2>
+        <select id="select" name="judoka" onchange="displayCheckbox()">
+          <?
+            const ar_pers = getJudoka();
+            for(let p of ar_pers){
+          ?>
+          <option value="<?=p?>"><?=p[1]?></option>
+          <?}?>
+        </select>
+        <div id="div-btn" class="space">
+          <fieldset id="fieldset" hidden>
+            <legend>Cocher et Valider</legend>
+          </fieldset>
+          <div class="space">
+            <button class="action" onclick="google.script.run.deleteJudoka(document.getElementById('form-update'))">Supprimer</button>
+            <input type="button" value="Fermer" onclick="google.script.host.close()" />
+          </div>
+        </div>
+      </div>
+    </form>
+    <script>
+      function displayCheckbox(){
+        const selectElement = document.getElementById('select');
+        const arrJudoka = selectElement.value.split(',');
+
+        const fieldset = document.getElementById('fieldset');
+        fieldset.hidden = false;
+        const div = document.createElement('div');
+        const checkbox = document.createElement('input');
+        const label = document.createElement('label');
+
+        checkbox.setAttribute('type', 'checkbox');
+        checkbox.setAttribute('name', 'checkbox');
+        checkbox.setAttribute('id', arrJudoka[0]);
+        checkbox.setAttribute('value', arrJudoka[0]);
+        label.setAttribute('for', arrJudoka[0]);
+        label.innerHTML = arrJudoka[1];
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        fieldset.appendChild(div);
+
+      }
+    </script>
+  </body>
+</html>
