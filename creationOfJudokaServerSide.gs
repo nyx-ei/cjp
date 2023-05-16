@@ -16,7 +16,13 @@ const default_img_link = "https://img.freepik.com/vecteurs-premium/portrait-jeun
 function onOpen() {
   ui.createMenu('Judoka Database Administration')
     .addSubMenu(ui.createMenu('Judoka')
-      .addItem('Create Judoka', 'createJudoka'))
+      .addItem('Create Judoka', 'createJudoka')
+      .addItem('Modify Judoka', 'modifyJudoka'))
+    .addSubMenu(ui.createMenu('Competition')
+      .addItem('Create Competition', 'createCompetitionSidebar')
+      .addItem('Modify Competition', 'modifyCompetitionSidebar'))
+    .addSubMenu(ui.createMenu('Fight')
+      .addItem('Create Fight', 'createFightSidebar'))
     .addToUi();
 }
 
@@ -24,7 +30,8 @@ function onOpen() {
  * Creates a sidebar in Google Sheets. Its content is a html document.
  */
 function createJudoka() {
-  var html = HtmlService.createHtmlOutputFromFile('creationOfJudoka')
+  var html = HtmlService.createTemplateFromFile('creationOfJudoka')
+      .evaluate()
       .setTitle('Creation of a Judoka');
   SpreadsheetApp.getUi()
       .showSidebar(html);
