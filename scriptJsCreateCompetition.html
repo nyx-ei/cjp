@@ -1,0 +1,33 @@
+    <script>
+      function validateFields(input){
+        if (input.name.value.length === 0){
+          const divName = document.getElementById('div-name');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Veuillez entrer le nom de la compétition.";
+          divName.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.town.value.length === 0){
+          const divTown = document.getElementById('div-town');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Veuillez entrer la ville qui accueille la compétition.";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.year.value.length === 0 || isNaN(parseInt(input.year.value))){
+          const divYear = document.getElementById('div-year');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Veuillez un nombre correcte.";
+          divYear.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else
+          google.script.run.addCompet(input);
+      }
+    </script>
