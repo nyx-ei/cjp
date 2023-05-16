@@ -2,9 +2,9 @@ const ui = SpreadsheetApp.getUi();
 
 const first_row_index = 2;
 const first_col_index = 1;
-
 const table_compet = "Competition";
 const table_level = "Level";
+var sheets = SpreadsheetApp.getActiveSpreadsheet();
 const sheet_compet = sheets.getSheetByName(table_compet);
 const sheet_level = sheets.getSheetByName(table_level);
 
