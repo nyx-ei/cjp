@@ -45,39 +45,6 @@
       <button class="action" onclick="validateFields(this.parentNode)">Créer</button>
       <button>Annuler</button>
     </form>
-    <script>
-      function validateFields(input){
-        console.log(input.name.value.length)
-        if (input.name.value.length === 0){
-          const divName = document.getElementById('div-name');
-          const div = document.createElement('div');
-          div.className = "warning";
-          div.innerHTML = "Veuillez entrer un nom";
-          divName.appendChild(div);
-          setTimeout(()=>{
-            div.parentNode.removeChild(div);
-          }, 2000);
-        }else if (input.birthdate.value.length === 0){
-          const divBD = document.getElementById('div-birthdate');
-          const div = document.createElement('div');
-          div.className = "warning";
-          div.innerHTML = "Veuillez entrer la date de naissance";
-          divBD.appendChild(div);
-          setTimeout(()=>{
-            div.parentNode.removeChild(div);
-          }, 2000);
-        }else if (input.nationality.value.length === 0){
-          const divNat = document.getElementById('div-nat');
-          const div = document.createElement('div');
-          div.className = "warning";
-          div.innerHTML = "Veuillez entrer la nationalité";
-          divNat.appendChild(div);
-          setTimeout(()=>{
-            div.parentNode.removeChild(div);
-          }, 2000);
-        }else
-          google.script.run.addJudoka(input);
-      }
-    </script>
+     <?!= HtmlService.createHtmlOutputFromFile('scriptsJsCreateJudoka.html').getContent() ?>
   </body>
 </html>
