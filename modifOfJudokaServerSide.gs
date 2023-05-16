@@ -12,16 +12,6 @@ const table_person = "Person";
 
 var sheets = SpreadsheetApp.getActiveSpreadsheet();
 const sheet_pers = sheets.getSheetByName(table_person);
-
-const default_img_link = "https://img.freepik.com/vecteurs-premium/portrait-jeune-homme-barbe-coiffure-avatar-masculin-illustration-vectorielle_266660-423.jpg?w=740";
-
-function onOpen() {
-  ui.createMenu('Judoka Database Administration')
-    .addSubMenu(ui.createMenu('Judoka')
-      .addItem('Modify Judoka', 'modifyJudoka'))
-    .addToUi();
-}
-
 /**
  * Creates a sidebar in Google Sheets. Its content is a html document.
  */
