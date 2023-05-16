@@ -7,17 +7,6 @@ const table_level = "Level";
 var sheets = SpreadsheetApp.getActiveSpreadsheet();
 const sheet_compet = sheets.getSheetByName(table_compet);
 const sheet_level = sheets.getSheetByName(table_level);
-
-/**
- * Creates a custom menu in Google Sheets when the spreadsheet opens.
- */
-function onOpen() {
-  ui.createMenu('Judoka Database Administration')
-    .addSubMenu(ui.createMenu('Competition')
-      .addItem('Create Competition', 'createCompetitionSidebar'))
-    .addToUi();
-}
-
 /**
  * Creates a sidebar in Google Sheets. Its content is a html document.
  */
