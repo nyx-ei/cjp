@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+      body{
+        margin-left: 30px;
+      }
+      .space{
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form-update">
+      <div class="block form-group">
+        <label for="judoka">Selectionnez le Judoka à modifier</label>
+        <select id="select" name="judoka" onchange="displayCheckbox()">
+          <?
+            const ar_pers = getJudoka();
+            for(let p of ar_pers){
+          ?>
+          <option value="<?=p?>" onclick="displayCheckbox()"><?=p[1]?></option>
+          <?}?>
+        </select>
+      </div>
+      <div hidden id="div-container">
+        <fieldset>
+          <legend>Selectionnez les attributs à modifier</legend>
+          <div>
+            <input type="checkbox" name="checkbox" id="name">
+            <label for="name">Nom</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="birthdate">
+            <label for="birthdate">Date de Naissance</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="nationality">
+            <label for="nationality">Nationalité</label>
+          </div>
+          <div>
+            <input type="checkbox" name="checkbox" id="image">
+            <label for="image">Changer le lien de l'image de profil</label>
+          </div>
+        </fieldset>
+        <div id="div-update" class="block form-group">
+            <div hidden>
+              <input id = "idJudoka" type="text" name="idJudoka">
+            </div>
+            <div id="div-btn" class="space">
+              <button class="action" onclick="google.script.run.updateJudoka(document.getElementById('form-update'))">Mettre à jour</button>
+              <button>Annuler</button>
+            </div>
+        </div>
+      </div>
+    </form>
+    <?!= HtmlService.createHtmlOutputFromFile('scriptsJsModifyJudoka.html').getContent() ?>
+  </body>
+</html>
