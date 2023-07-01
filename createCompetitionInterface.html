@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+      body{
+        margin-left: 30px;
+      }
+      .warning {
+        border: 2px solid #f39389;
+        border-radius: 2px;
+        padding: 10px;
+        position: absolute;
+        background-color: #fbd8d4;
+        color: #3b3c40;
+      }
+      .space{
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+        <h1>CREATION COMPETITION</h1>
+    <p>Remplissez tous les champs ci-dessous</p>
+    <form id="inputForm">
+      <div class="form-group" id="div-name">
+        <label for="name">Nom:</label>
+        <input type="text" id="name" name="nameCompet">
+      </div>
+      <br/>
+      <div class="form-group" id="div-town">
+        <label for="town">Ville qui accueil la compétition:</label>
+        <input type="text" id="town" name="town">
+      </div>
+      <br/>
+      <div class="form-group" id="div-year">
+        <label for="year">Année:</label>
+        <input type="text" id="year" name="year">
+      </div>
+      <br/>
+      <div class="form-group">
+        <label for="level">Niveau de la compétition</label>
+        <select id="select" name="level">
+          <?
+            const ar_level = getLevels();
+            for(let l of ar_level){
+          ?>
+          <option value="<?=l[0]?>"><?=l[1]?></option>
+          <?}?>
+        </select>
+      </div>
+      <div class="space">
+        <button class="action" onclick="validateFields(this.parentNode.parentNode)">Créer</button>
+        <button onclick="google.script.host.close()">Annuler</button>
+      </div>
+    </form>
+    <?!= HtmlService.createHtmlOutputFromFile('scriptJsCreateCompetition.html').getContent() ?>
+  </body>
+</html>
