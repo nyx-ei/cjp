@@ -1,0 +1,98 @@
+    <script>
+      function displayNameAndCategory(node){
+        const selectElementA = document.getElementById('selectA');
+        const arrFighterA = selectElementA.value.split(',');
+        const selectElementB = document.getElementById('selectB');
+        const arrFighterB = selectElementB.value.split(',');
+        const optionEltWinnerA = document.getElementById('winnerA');
+        optionEltWinnerA.value = arrFighterA[0];
+        optionEltWinnerA.innerHTML = arrFighterA[0];
+        const optionEltWinnerB = document.getElementById('winnerB');
+        optionEltWinnerB.value = arrFighterB[0];
+        optionEltWinnerB.innerHTML = arrFighterB[0];
+        if (node.id === 'selectA-div'){
+          google.script.run.withSuccessHandler(object => {
+            console.log(document.getElementById('paragraphA'));
+            if (document.getElementById('paragraphA') !== null)
+              node.removeChild(document.getElementById('paragraphA'));
+
+            let display = '<strong>Nom: </strong><em>'+ object.person +' </em> <strong> Category: </strong><em>'+ object.category +' </em> <strong>Gender: </strong><em>'+ object.gender +' </em>';
+            const paragraph = document.createElement('p');
+            paragraph.id = 'paragraphA';
+            paragraph.innerHTML = display;
+            node.appendChild(paragraph);
+          }).getNameAndCategory(arrFighterA[1], arrFighterA[2]);
+        }else{
+          google.script.run.withSuccessHandler(object => {
+            if (document.getElementById('paragraphB') !== null)
+              node.removeChild(document.getElementById('paragraphB'));
+
+            let display = '<strong>Nom: </strong><em>'+ object.person +' </em> <strong> Category: </strong><em>'+ object.category +' </em> <strong>Gender: </strong><em>'+ object.gender +' </em>';
+            const paragraph = document.createElement('p');
+            paragraph.id = 'paragraphB';
+            paragraph.innerHTML = display;
+            node.appendChild(paragraph);
+          }).getNameAndCategory(arrFighterB[1], arrFighterB[2]);
+        }
+      }
+
+      function validateFields(input){
+        const regExStr = /^\d+[:]\d+$/;
+        if (input.fighterA.value === input.fighterB.value){
+          const divName = document.getElementById('selectB-div');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Attention!! Les identifiants des deux combattants doivent être différents.";
+          divName.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.duration.value.length === 0  || !regExStr.test(input.duration.value)){
+          const divName = document.getElementById('duration');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Durée: Veuillez entrez la durée du combat au format nombre:nombre!";
+          divName.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 4000);
+        }else if (input.ipponFighterA.value.length === 0 || isNaN(parseInt(input.ipponFighterA.value))){
+          const divTown = document.getElementById('ipponFighterA');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Ippon Combattant 1: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.ipponFighterB.value.length === 0 || isNaN(parseInt(input.ipponFighterB.value))){
+          const divTown = document.getElementById('ipponFighterB');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Ippon Combattant 2: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.wazaFighterA.value.length === 0 || isNaN(parseInt(input.wazaFighterA.value))){
+          const divTown = document.getElementById('wazaFighterA');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Waza Combattant 1: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else if (input.wazaFighterB.value.length === 0 || isNaN(parseInt(input.wazaFighterB.value))){
+          const divTown = document.getElementById('wazaFighterB');
+          const div = document.createElement('div');
+          div.className = "warning";
+          div.innerHTML = "Champs Waza Combattant 2: Veuillez entrer un nombre!";
+          divTown.appendChild(div);
+          setTimeout(()=>{
+            div.parentNode.removeChild(div);
+          }, 2000);
+        }else
+          google.script.run.createFight(input);
+      }
+    </script>

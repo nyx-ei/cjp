@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+      body{
+        margin-left: 30px;
+      }
+      .warning {
+        border: 2px solid #f39389;
+        border-radius: 2px;
+        padding: 10px;
+        position: absolute;
+        background-color: #fbd8d4;
+        color: #3b3c40;
+      }
+      .space{
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form-update" class="form-group">
+      <div id="div-wrapper">
+        <div id="selectA-div">
+          <label for="fighterA">Combattant 1:</label>
+          <select id="selectA" name="fighterA" onchange="displayNameAndCategory(this.parentNode)">
+            <?
+              const ar_fighter = getFighters();
+              for(let f of ar_fighter){
+            ?>
+            <option value="<?=f?>"><?=f[0]?></option>
+            <?}?>
+          </select>
+        </div>
+        <div id="selectB-div">
+          <label for="fighterB">Combattant 2:</label>
+          <select id="selectB" name="fighterB" onchange="displayNameAndCategory(this.parentNode)">
+            <?for(let f of ar_fighter){?>
+            <option value="<?=f?>"><?=f[0]?></option>
+            <?}?>
+          </select>
+        </div>
+        <div id="selectCompet-div">
+          <label for="selectCompet">Compétition:</label>
+          <select id="selectCompet" name="compet">
+            <?
+              const ar_competition = getCompetition();
+              for(let compet of ar_competition){
+            ?>
+            <option value="<?=compet[0]?>">
+              <strong>ID: </strong> <em><?=compet[0]?></em>
+              <strong>Nom: </strong> <em><?=compet[1]?></em>
+              <strong>Ville: </strong> <em><?=compet[2]?></em>
+              <strong>Année: </strong> <em><?=compet[3]?></em>
+            </option>
+            <?}?>
+          </select>
+        </div>
+        <div id="stage-div">
+          <label for="stage">Tour:</label>
+          <select id="stage" name="stage">
+            <option value="Round 1">Round 1</option>
+            <option value="Round 2">Round 2</option>
+            <option value="Round 3">Round 3</option>
+            <option value="Repechache">Repêchache</option>
+            <option value="Quater-Final">Quater-Final</option>
+            <option value="Semi-Final">Semi-Final</option>
+            <option value="Final">Final</option>
+          </select>
+        </div>
+        <div id="winner">
+          <label for="winner">Vainqueur:</label>
+          <select name="winner">
+            <option id="winnerA"></option>
+            <option id="winnerB"></option>
+          </select>
+        </div>
+        <div id="duration">
+          <label for="duration">Durée:</label>
+          <input type="text" name="duration"/>
+        </div>
+        <div id="ipponFighterA">
+          <label for="ipponFighterA">Ippon Combattant 1:</label>
+          <input type="text" name="ipponFighterA"/>
+        </div>
+        <div id="ipponFighterB">
+          <label for="ipponFighterB">Ippon Combattant 2:</label>
+          <input type="text" name="ipponFighterB"/>
+        </div>
+        <div id="wazaFighterA">
+          <label for="wazaFighterA">Waza Combattant 1:</label>
+          <input type="text" name="wazaFighterA"/>
+        </div>
+        <div id="wazaFighterB">
+          <label for="wazaFighterB">Waza Combattant 2:</label>
+          <input type="text" name="wazaFighterB"/>
+        </div>
+        <div id="div-btn" class="space">
+          <div class="space">
+            <button class="action" onclick="validateFields(this.parentNode.parentNode.parentNode.parentNode)">Créer</button>
+            <input type="button" value="Fermer" onclick="google.script.host.close()" />
+          </div>
+        </div>
+      </div>
+    </form>
+    <?!= HtmlService.createHtmlOutputFromFile('scriptJsCreateFight.html').getContent() ?>
+  </body>
+</html>
