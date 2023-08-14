@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
+  <head>
+    <base target="_top">
+    
         <base target="_top">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
-        
+         
         <!--##JAVASCRIPT FUNCTIONS ---------------------------------------------------- -->
         <script>
           //PREVENT FORMS FROM SUBMITTING / PREVENT DEFAULT BEHAVIOUR
@@ -18,14 +20,14 @@
             }
           }
           window.addEventListener("load", preventFormSubmit, true); 
-             
-          
+              
+           
           //HANDLE FORM SUBMISSION
           function handleFormSubmit(formObject) {
             google.script.run.withSuccessHandler(createTable).processForm(formObject);
             document.getElementById("search-form").reset();
           }
-        
+         
           //CREATE THE DATA TABLE
           function createTable(dataArray) {
             if(dataArray && dataArray !== undefined && dataArray.length != 0){
@@ -33,13 +35,12 @@
                            "<thead style='white-space: nowrap'>"+
                              "<tr>"+                               //Change table headings to match witht he Google Sheet
                               "<th scope='col'>White Judoka</th>"+
-                              "<th scope='col'>Score and Duration	</th>"+
-                              "<th scope='col'>Blue Judoka	</th>"+
-                              "<th scope='col'>ORDERLINENUMBER</th>"+
+                              "<th scope='col'>Score And Duration</th>"+
+                              "<th scope='col'>Blue Judoka</th>"+
                               "<th scope='col'>Event</th>"+
                               "<th scope='col'>Round</th>"+
                               "<th scope='col'>Date</th>"+
-                               
+                                                            
                             "</tr>"+
                           "</thead>";
               for(var i=0; i<dataArray.length; i++) {
@@ -59,35 +60,13 @@
             }
           }
         </script>
-        <!--##JAVASCRIPT FUNCTIONS ~ END ---------------------------------------------------- -->
-        
-    </head>
-    <body>
-      <div class="banniere">
-            
-  </div>
-
-  <div class="banniere1">
-    
-  <div class="container">
-    <nav>
-      <div>
-        <ul class="myUL">
-          <li><a href="">Overview</a></li>
-          <li><a href="">Photos </a></li> 
-          <li><a href="">Contests</a></li>  
-          <li><a href="">Videos</a></li>  
-          <li><a href="">Results</a></li>
-          <li><a href="">WRL</a></li>
-        </ul>
-      </div>
-      
-    </nav>
-        <div class="container">
+  </head>
+  <body>
+    <div class="container">
             <br>
             <div class="row">
               <div class="col">
-            
+             
                   <!-- ## SEARCH FORM ------------------------------------------------ -->
                   <form id="search-form" class="form-inline" onsubmit="handleFormSubmit(this)">
                     <div class="form-group mb-2">
@@ -99,20 +78,20 @@
                     <button type="submit" class="btn btn-primary mb-2">Search</button>
                   </form>
                   <!-- ## SEARCH FORM ~ END ------------------------------------------- -->
-              
+               
               </div>    
             </div>
             <div class="row">
               <div class="col">
-            
+             
                 <!-- ## TABLE OF SEARCH RESULTS ------------------------------------------------ -->
                 <div id="search-results" class="table-responsive">
                   <!-- The Data Table is inserted here by JavaScript -->
                 </div>
                 <!-- ## TABLE OF SEARCH RESULTS ~ END ------------------------------------------------ -->
-                  
+                   
               </div>
             </div>
         </div>
-    </body>
+  </body>
 </html>
